@@ -6,13 +6,14 @@ record Destination(String name, int distanceFromSydney) {}
 public class Main {
   public static void main(String[] args) {
     LinkedList<Destination> towns = new LinkedList<>();
-    towns.add(new Destination("Sydney", 0));
-    towns.add(new Destination("Adelaide", 1374));
-    towns.add(new Destination("Alice Springs", 2771));
-    towns.add(new Destination("Brisbane", 917));
-    towns.add(new Destination("Darwin", 3972));
-    towns.add(new Destination("Melbourne", 877));
-    towns.add(new Destination("Perth", 3923));
+
+    addTown(towns, new Destination("Sydney", 0));
+    addTown(towns, new Destination("Adelaide", 1374));
+    addTown(towns, new Destination("Alice Springs", 2771));
+    addTown(towns, new Destination("Brisbane", 917));
+    addTown(towns, new Destination("Darwin", 3972));
+    addTown(towns, new Destination("Melbourne", 877));
+    addTown(towns, new Destination("Perth", 3923));
 
     getUserInput(towns);
   }
@@ -84,5 +85,11 @@ public class Main {
           (Q)uit
           """
     );
+  }
+
+  public static void addTown(LinkedList<Destination> list, Destination town) {
+    if (!list.contains(town)) {
+      list.add(town);
+    }
   }
 }
