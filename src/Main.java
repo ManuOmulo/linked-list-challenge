@@ -20,27 +20,36 @@ public class Main {
   public static void getUserInput(LinkedList<Destination> list) {
     Scanner sc = new Scanner(System.in);
     boolean running = true;
+    int count = 0;
+
+    sortList(list);
 
     while (running) {
-      System.out.println("""
-          Available actions (select word or letter):
-          (F)orward
-          (B)ackword
-          (L)ist Places
-          (M)enu
-          (Q)uit
-          """
-      );
+      System.out.print("Choose action (type m or Menu to display options): ");
       String choice = sc.nextLine().toLowerCase();
 
       if (choice.contains("f") || choice.contains("forward")) {
-        System.out.println("Moving forward");
+        if (count < (list.size() - 1)) {
+          var iterator = list.listIterator(count);
+          iterator.next();
+          count++;
+          System.out.printf("%s (%dkm)\n",list.get(count).name(), list.get(count).distanceFromSydney());
+        } else {
+          System.out.println("You have reached the end of itinerary");
+        }
       } else if (choice.contains("b") || choice.contains("backward")) {
-        System.out.println("Moving backward");
+        if (count > 0) {
+          var iterator = list.listIterator(count);
+          iterator.previous();
+          count--;
+          System.out.printf("%s (%dkm)\n",list.get(count).name(), list.get(count).distanceFromSydney());
+        } else {
+          System.out.println("You are already at the starting point Sydney");
+        }
       } else if (choice.contains("l") || choice.contains("list places")) {
         listTowns(list);
       } else if (choice.contains("m") || choice.contains("menu")) {
-        System.out.println("Listing menu");
+        printMenu();
       } else {
         running = false;
       }
@@ -50,22 +59,30 @@ public class Main {
   public static void listTowns(LinkedList<Destination> list) {
     System.out.println("Travel Itinerary");
 
-    for (int i = 0; i < list.size(); i++) {
-      for (int j = 1; j < list.size(); j++) {
-        if (i < j) {
-          if (list.get(i).distanceFromSydney() < list.get(j).distanceFromSydney()) {
-            var temp = list.get(i);
-            var one = list.get(i);
-            var two = list.get(j);
-            one = two;
-            two = temp;
-          }
-        }
+    for (int i = 0; i < list.size(); i++ ) {
+      if (i == list.size() - 1) {
+        System.out.printf("%s (%dkm)",list.get(i).name(), list.get(i).distanceFromSydney());
+      } else {
+        System.out.printf("%s (%dkm) -> ", list.get(i).name(), list.get(i).distanceFromSydney());
       }
-      System.out.printf("Sydney to %s -> %dkm\n", list.get(i).name(), list.get(i).distanceFromSydney());
     }
 
     System.out.println();
   }
 
+  public static void sortList(LinkedList<Destination> list) {
+    list.sort((t1, t2) -> t1.distanceFromSydney() - t2.distanceFromSydney());
+  }
+
+  public static void printMenu() {
+    System.out.println("""
+          Available actions (select word or letter):
+          (F)orward
+          (B)ackword
+          (L)ist Places
+          (M)enu
+          (Q)uit
+          """
+    );
+  }
 }
